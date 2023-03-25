@@ -26,12 +26,19 @@ public class BatteryServiceImpl implements BatteryService {
 	private ConfigUtility configUtility;
 	private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
 
+	/**
+	 * Service method to store the battery list received
+	 * 
+	 * @param List<BatteryDTO> batteryList List of battery
+	 * @return AddBatteryResponse response consisting of response code and response
+	 *         description
+	 */
 	@Override
 	public AddBatteryResponse storeBatteryInfo(List<BatteryDTO> batteryList) {
 		logger.info("Received request for storing batteries [{}]", batteryList);
 		AddBatteryResponse resp = new AddBatteryResponse();
 		logger.debug("storing batteries to db");
-		batteryList.stream().map(b -> DTOUtility.convertBatteryDTOToBattery(b)).forEach(b -> repo.save(b));
+		batteryList.stream().map(DTOUtility::convertBatteryDTOToBattery).forEach(b -> repo.save(b));
 		logger.debug("storing batteries to db complete");
 		resp.setRespCode(configUtility.getPropertyAsInt("server.success.resp.code"));
 		resp.setRespDesc(configUtility.getProperty("add.battery.list.success.resp.desc"));
@@ -39,6 +46,16 @@ public class BatteryServiceImpl implements BatteryService {
 		return resp;
 	}
 
+	/**
+	 * Service method to get the battery information with in the range of postCode
+	 * passed in request
+	 * 
+	 * @param GetBatteryListRequest request containing range of postCode
+	 * @return GetBatteryListResponse response consisting of response code, response
+	 *         description, list of battery names matching the post code range
+	 *         sorted in ascending order and statistics of result like total battery
+	 *         capacity and average battery capacity
+	 */
 	@Override
 	public GetBatteryListResponse getBatteryList(GetBatteryListRequest request) {
 		Integer postCodeStart = request.getPostCodeStart();
@@ -47,7 +64,7 @@ public class BatteryServiceImpl implements BatteryService {
 		List<Battery> bList = repo.findByPostcodeBetween(postCodeStart, postCodeEnd);
 		logger.debug("battery list received from db for post code range [{}]", bList);
 		GetBatteryListResponse resp = new GetBatteryListResponse();
-		if (bList == null || bList.size() == 0) {
+		if (bList == null || bList.isEmpty()) {
 			logger.debug("No battery found for post code range [{}] - [{}]", postCodeStart, postCodeEnd);
 			resp.setRespCode(configUtility.getPropertyAsInt("server.not.found.resp.code"));
 			resp.setRespDesc(configUtility.getProperty("get.battery.list.not.found.resp.desc"));
