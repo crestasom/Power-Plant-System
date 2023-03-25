@@ -14,11 +14,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
 @Builder
 @Entity
+@Data
 @Table(name = "battery")
 @Validated
 public class Battery implements Comparable<Battery> {
@@ -28,13 +29,18 @@ public class Battery implements Comparable<Battery> {
 	@NotBlank(message = "Name should not be empty")
 	private String name;
 	@Range(min = 1, message = "post code may not be empty or null")
-	private Integer postCode;
+	private Integer postcode;
 	@Range(min = 1, message = "capacity may not be empty or null")
 	private Integer capacity;
 
-	@Override
 	public int compareTo(Battery o) {
 		return name.compareTo(o.getName());
+	}
+
+	@Override
+	public String toString() {
+		return "Battery [id=" + id + ", name=" + getName() + ", postCode=" + getPostcode() + ", capacity="
+				+ getCapacity() + "]";
 	}
 
 }

@@ -18,7 +18,6 @@ import org.mockito.quality.Strictness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.crestasom.pps.dto.BatteryDTO;
-import com.crestasom.pps.model.AddBatteryRequest;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.Battery;
 import com.crestasom.pps.model.GetBatteryListRequest;
@@ -44,10 +43,14 @@ public class BatteryServiceUnitTesting {
 		Mockito.when(repo.save(any())).thenReturn(null);
 		List<Battery> bList = new ArrayList<>();
 		bList.add(new Battery(1, "b1", 44600, 220));
-		bList.add(new Battery(2, "b2", 44700, 230));
+		Battery b2 = new Battery();
+		b2.setName("b2");
+		b2.setPostcode(44700);
+		b2.setCapacity(230);
+		bList.add(b2);
 		bList.add(new Battery(3, "b3", 44800, 240));
-		Mockito.when(repo.findByPostCodeBetween(eq(44600), eq(44700))).thenReturn(bList);
-		Mockito.when(repo.findByPostCodeBetween(eq(446800), eq(44900))).thenReturn(null);
+		Mockito.when(repo.findByPostcodeBetween(eq(44600), eq(44700))).thenReturn(bList);
+		Mockito.when(repo.findByPostcodeBetween(eq(446800), eq(44900))).thenReturn(null);
 		Mockito.when(util.getPropertyAsInt(eq("server.success.resp.code"))).thenReturn(200);
 		Mockito.when(util.getPropertyAsInt(eq("server.not.found.resp.code"))).thenReturn(404);
 
@@ -55,13 +58,12 @@ public class BatteryServiceUnitTesting {
 
 	@Test
 	public void testInsertBatteries() {
-		AddBatteryRequest req = new AddBatteryRequest();
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
 		bList.add(new BatteryDTO("battery2", 44700, 280));
 		bList.add(new BatteryDTO("battery3", 44800, 190));
-		req.setBatteryList(bList);
-		AddBatteryResponse resp = service.storeBatteryInfo(req);
+		bList.forEach(b -> logger.debug("battery [{}]", b));
+		AddBatteryResponse resp = service.storeBatteryInfo(bList);
 		assertEquals(Integer.valueOf(200), resp.getRespCode());
 
 	}
@@ -76,6 +78,7 @@ public class BatteryServiceUnitTesting {
 		assertEquals(200, resp.getRespCode().intValue());
 		assertEquals(Integer.valueOf(690), resp.getTotalBatteryCapacity());
 		assertEquals(Double.valueOf(230), resp.getAverageBatteryCapacity());
+
 	}
 
 	@Test

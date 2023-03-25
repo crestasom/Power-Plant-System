@@ -8,5 +8,5 @@ import com.crestasom.pps.model.Battery;
 
 public interface BatteryRepo extends CrudRepository<Battery, Integer> {
 
-	public List<Battery> findByPostCodeBetween(Integer postCodeStart, Integer postCodeEnd);
+	public List<Battery> findByPostcodeBetween(Integer postCodeStart, Integer postCodeEnd);
 }

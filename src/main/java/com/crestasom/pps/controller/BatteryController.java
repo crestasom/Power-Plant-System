@@ -1,14 +1,16 @@
 package com.crestasom.pps.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crestasom.pps.model.AddBatteryRequest;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.GetBatteryListRequest;
+import com.crestasom.pps.dto.BatteryDTO;
 import com.crestasom.pps.model.GetBatteryListResponse;
 import com.crestasom.pps.service.BatteryService;
 
@@ -23,7 +25,7 @@ public class BatteryController {
 	private BatteryService batteryService;
 
 	@PostMapping("/add-batteries")
-	public AddBatteryResponse storeBatteries(@Valid @RequestBody AddBatteryRequest request) {
+	public AddBatteryResponse storeBatteries(@Valid @RequestBody List<BatteryDTO> request) {
 		return batteryService.storeBatteryInfo(request);
 	}
 

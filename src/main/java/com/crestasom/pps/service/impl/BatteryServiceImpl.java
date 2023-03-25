@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.crestasom.pps.dto.BatteryDTO;
-import com.crestasom.pps.model.AddBatteryRequest;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.Battery;
 import com.crestasom.pps.model.GetBatteryListRequest;
@@ -28,11 +27,9 @@ public class BatteryServiceImpl implements BatteryService {
 	private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
 
 	@Override
-	public AddBatteryResponse storeBatteryInfo(AddBatteryRequest request) {
-		logger.info("Received request for storing batteries [{}]", request);
+	public AddBatteryResponse storeBatteryInfo(List<BatteryDTO> batteryList) {
+		logger.info("Received request for storing batteries [{}]", batteryList);
 		AddBatteryResponse resp = new AddBatteryResponse();
-		resp.setReqId(request.getReqId());
-		List<BatteryDTO> batteryList = request.getBatteryList();
 		logger.debug("storing batteries to db");
 		batteryList.stream().map(b -> DTOUtility.convertBatteryDTOToBattery(b)).forEach(b -> repo.save(b));
 		logger.debug("storing batteries to db complete");
@@ -47,10 +44,9 @@ public class BatteryServiceImpl implements BatteryService {
 		Integer postCodeStart = request.getPostCodeStart();
 		Integer postCodeEnd = request.getPostCodeEnd();
 		logger.info("Get battery list for post code range [{}] - [{}]", postCodeStart, postCodeEnd);
-		List<Battery> bList = repo.findByPostCodeBetween(postCodeStart, postCodeEnd);
+		List<Battery> bList = repo.findByPostcodeBetween(postCodeStart, postCodeEnd);
 		logger.debug("battery list received from db for post code range [{}]", bList);
 		GetBatteryListResponse resp = new GetBatteryListResponse();
-		resp.setReqId(request.getReqId());
 		if (bList == null || bList.size() == 0) {
 			logger.debug("No battery found for post code range [{}] - [{}]", postCodeStart, postCodeEnd);
 			resp.setRespCode(configUtility.getPropertyAsInt("server.not.found.resp.code"));
@@ -70,7 +66,7 @@ public class BatteryServiceImpl implements BatteryService {
 	public void removeAllBatteries() {
 		logger.info("removing all batteries from database");
 		repo.deleteAll();
-		
+
 	}
 
 }

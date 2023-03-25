@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BatteryDTO {
 	private String name;
-	private int postCode;
+	private int postcode;
 	private int capacity;
 }

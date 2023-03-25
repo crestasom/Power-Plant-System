@@ -42,25 +42,21 @@ public class BatteryControllerIntegrationTest {
 
 	public void insertMockRecord() {
 		service.removeAllBatteries();
-		AddBatteryRequest req = new AddBatteryRequest();
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
 		bList.add(new BatteryDTO("battery2", 44700, 280));
 		bList.add(new BatteryDTO("battery3", 44800, 190));
-		req.setBatteryList(bList);
-		service.storeBatteryInfo(req);
+		service.storeBatteryInfo(bList);
 	}
 
 	@Test
 	public void testInsertMockRecord() throws Exception {
-		AddBatteryRequest req = new AddBatteryRequest();
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
 		bList.add(new BatteryDTO("battery2", 44700, 280));
 		bList.add(new BatteryDTO("battery3", 44800, 190));
-		req.setBatteryList(bList);
 		ObjectMapper mapper = new ObjectMapper();
-		String requestJson = objtoJson(req);
+		String requestJson = objtoJson(bList);
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.post("/add-batteries?reqId=" + PPSUtils.getUUID())
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
@@ -71,15 +67,13 @@ public class BatteryControllerIntegrationTest {
 
 	@Test
 	public void testInsertMockRecordNameValidationFailed() throws Exception {
-		AddBatteryRequest req = new AddBatteryRequest();
 		List<BatteryDTO> bList = new ArrayList<>();
 		BatteryDTO dto = new BatteryDTO();
 		dto.setCapacity(200);
-		dto.setPostCode(44600);
+		dto.setPostcode(44600);
 		bList.add(dto);
-		req.setBatteryList(bList);
 		ObjectMapper mapper = new ObjectMapper();
-		String requestJson = objtoJson(req);
+		String requestJson = objtoJson(bList);
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.post("/add-batteries?reqId=" + PPSUtils.getUUID())
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
@@ -133,5 +127,4 @@ public class BatteryControllerIntegrationTest {
 		return requestJson;
 	}
 
-	
 }
