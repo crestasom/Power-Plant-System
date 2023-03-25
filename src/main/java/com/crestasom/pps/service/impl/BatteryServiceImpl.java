@@ -26,13 +26,6 @@ public class BatteryServiceImpl implements BatteryService {
 	private ConfigUtility configUtility;
 	private static final Logger logger = LoggerFactory.getLogger(BatteryServiceImpl.class);
 
-	/**
-	 * Service method to store the battery list received
-	 * 
-	 * @param List<BatteryDTO> batteryList List of battery
-	 * @return AddBatteryResponse response consisting of response code and response
-	 *         description
-	 */
 	@Override
 	public AddBatteryResponse storeBatteryInfo(List<BatteryDTO> batteryList) {
 		logger.info("Received request for storing batteries [{}]", batteryList);
@@ -46,16 +39,7 @@ public class BatteryServiceImpl implements BatteryService {
 		return resp;
 	}
 
-	/**
-	 * Service method to get the battery information with in the range of postCode
-	 * passed in request
-	 * 
-	 * @param GetBatteryListRequest request containing range of postCode
-	 * @return GetBatteryListResponse response consisting of response code, response
-	 *         description, list of battery names matching the post code range
-	 *         sorted in ascending order and statistics of result like total battery
-	 *         capacity and average battery capacity
-	 */
+	
 	@Override
 	public GetBatteryListResponse getBatteryList(GetBatteryListRequest request) {
 		Integer postCodeStart = request.getPostCodeStart();

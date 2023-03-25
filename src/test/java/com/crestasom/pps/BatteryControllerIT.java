@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.crestasom.pps.dto.BatteryDTO;
-import com.crestasom.pps.model.AddBatteryRequest;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.GetBatteryListRequest;
 import com.crestasom.pps.model.GetBatteryListResponse;
@@ -32,7 +31,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = PpsApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class BatteryControllerIntegrationTest {
+public class BatteryControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -62,7 +61,7 @@ public class BatteryControllerIntegrationTest {
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
-		assertEquals(resp.getRespCode().intValue(), 200);
+		assertEquals(200,resp.getRespCode().intValue());
 	}
 
 	@Test
@@ -79,8 +78,8 @@ public class BatteryControllerIntegrationTest {
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().is4xxClientError()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
-		assertEquals(resp.getRespCode().intValue(), 400);
-		assertEquals(resp.getRespDesc(), "Name should not be empty");
+		assertEquals(400,resp.getRespCode().intValue());
+		assertEquals("Name should not be empty",resp.getRespDesc());
 	}
 
 	@Test
@@ -97,9 +96,9 @@ public class BatteryControllerIntegrationTest {
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
 				GetBatteryListResponse.class);
-		assertEquals(resp.getRespCode().intValue(), 200);
-		assertEquals(resp.getBatteryNames().size(), 2);
-		assertEquals(resp.getTotalBatteryCapacity().intValue(), 500);
+		assertEquals(200,resp.getRespCode().intValue());
+		assertEquals(2,resp.getBatteryNames().size());
+		assertEquals(500,resp.getTotalBatteryCapacity().intValue());
 	}
 
 	@Test
@@ -115,8 +114,8 @@ public class BatteryControllerIntegrationTest {
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
 				GetBatteryListResponse.class);
-		assertEquals(resp.getRespCode().intValue(), 404);
-		assertEquals(resp.getBatteryNames(), null);
+		assertEquals(404,resp.getRespCode().intValue());
+		assertEquals(null,resp.getBatteryNames());
 	}
 
 	public static String objtoJson(Object obj) throws JsonProcessingException {

@@ -1,7 +1,6 @@
 package com.crestasom.pps;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.any;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +27,14 @@ import com.crestasom.pps.util.ConfigUtility;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class BatteryServiceUnitTesting {
+public class BatteryServiceTest {
 	@Mock
 	BatteryRepo repo;
 	@Mock
 	ConfigUtility util;
 	@InjectMocks
 	BatteryServiceImpl service;
-	private static Logger logger = LoggerFactory.getLogger(BatteryServiceUnitTesting.class);
+	private static Logger logger = LoggerFactory.getLogger(BatteryServiceTest.class);
 
 	@BeforeEach
 	public void setUp() {
@@ -49,10 +48,10 @@ public class BatteryServiceUnitTesting {
 		b2.setCapacity(230);
 		bList.add(b2);
 		bList.add(new Battery(3, "b3", 44800, 240));
-		Mockito.when(repo.findByPostcodeBetween(eq(44600), eq(44700))).thenReturn(bList);
-		Mockito.when(repo.findByPostcodeBetween(eq(446800), eq(44900))).thenReturn(null);
-		Mockito.when(util.getPropertyAsInt(eq("server.success.resp.code"))).thenReturn(200);
-		Mockito.when(util.getPropertyAsInt(eq("server.not.found.resp.code"))).thenReturn(404);
+		Mockito.when(repo.findByPostcodeBetween(44600, 44700)).thenReturn(bList);
+		Mockito.when(repo.findByPostcodeBetween(446800, 44900)).thenReturn(null);
+		Mockito.when(util.getPropertyAsInt("server.success.resp.code")).thenReturn(200);
+		Mockito.when(util.getPropertyAsInt("server.not.found.resp.code")).thenReturn(404);
 
 	}
 
