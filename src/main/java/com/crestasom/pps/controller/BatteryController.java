@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crestasom.pps.model.AddBatteryResponse;
@@ -30,8 +31,9 @@ public class BatteryController {
 	}
 
 	@GetMapping("/get-batteries")
-	public GetBatteryListResponse getBatteryList(@RequestBody GetBatteryListRequest request) {
-		return batteryService.getBatteryList(request);
+	public GetBatteryListResponse getBatteryList(@RequestParam Integer postCodeStart,
+			@RequestParam Integer postCodeEnd) {
+		return batteryService.getBatteryList(postCodeStart, postCodeEnd);
 	}
 
 }

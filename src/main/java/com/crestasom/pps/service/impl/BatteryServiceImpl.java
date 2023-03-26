@@ -39,11 +39,14 @@ public class BatteryServiceImpl implements BatteryService {
 		return resp;
 	}
 
-	
+	public static void main(String[] args) {
+		Integer postCodeStart = 44600;
+		Integer posCodeEnd = 44700;
+		String requestUri = String.format("/get-batteries?postCodeStart=%d&posCodeEnd=%d", postCodeStart, posCodeEnd);
+		System.out.println(requestUri);
+	}
 	@Override
-	public GetBatteryListResponse getBatteryList(GetBatteryListRequest request) {
-		Integer postCodeStart = request.getPostCodeStart();
-		Integer postCodeEnd = request.getPostCodeEnd();
+	public GetBatteryListResponse getBatteryList(Integer postCodeStart,Integer postCodeEnd) {
 		logger.info("Get battery list for post code range [{}] - [{}]", postCodeStart, postCodeEnd);
 		List<Battery> bList = repo.findByPostcodeBetween(postCodeStart, postCodeEnd);
 		logger.debug("battery list received from db for post code range [{}]", bList);

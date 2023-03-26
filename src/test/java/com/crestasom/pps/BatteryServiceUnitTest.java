@@ -70,25 +70,20 @@ class BatteryServiceUnitTest {
 
 	@Test
 	void testGetBatteries() {
-		GetBatteryListRequest req = new GetBatteryListRequest();
-		req.setPostCodeStart(44600);
-		req.setPostCodeEnd(44700);
-
-		GetBatteryListResponse resp = service.getBatteryList(req);
+		Integer postCodeStart = 44600;
+		Integer posCodeEnd = 44700;
+		GetBatteryListResponse resp = service.getBatteryList(postCodeStart, posCodeEnd);
 		assertEquals(200, resp.getRespCode().intValue());
 		assertEquals(Integer.valueOf(690), resp.getTotalBatteryCapacity());
 		assertEquals(Double.valueOf(230), resp.getAverageBatteryCapacity());
 
 	}
 
-
 	@Test
 	void testGetBatteriesNoResult() {
-		GetBatteryListRequest req = new GetBatteryListRequest();
-		req.setPostCodeStart(446800);
-		req.setPostCodeEnd(44900);
-
-		GetBatteryListResponse resp = service.getBatteryList(req);
+		Integer postCodeStart = 446800;
+		Integer posCodeEnd = 44900;
+		GetBatteryListResponse resp = service.getBatteryList(postCodeStart, posCodeEnd);
 		assertEquals(404, resp.getRespCode().intValue());
 	}
 }

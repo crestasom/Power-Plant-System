@@ -55,12 +55,11 @@ class BatteryControllerIntegrationTest {
 		bList.add(new BatteryDTO("battery3", 44800, 190));
 		ObjectMapper mapper = new ObjectMapper();
 		String requestJson = objtoJson(bList);
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/add-batteries")
-						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/add-batteries")
+				.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
-		assertEquals(200,resp.getRespCode().intValue());
+		assertEquals(200, resp.getRespCode().intValue());
 	}
 
 	@Test
@@ -72,49 +71,42 @@ class BatteryControllerIntegrationTest {
 		bList.add(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		String requestJson = objtoJson(bList);
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/add-batteries")
-						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/add-batteries")
+				.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().is4xxClientError()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
-		assertEquals(400,resp.getRespCode().intValue());
-		assertEquals("Name should not be empty",resp.getRespDesc());
+		assertEquals(400, resp.getRespCode().intValue());
+		assertEquals("Name should not be empty", resp.getRespDesc());
 	}
 
 	@Test
 	void testGetBatteryList() throws Exception {
 		insertMockRecord();
-		GetBatteryListRequest req = new GetBatteryListRequest();
-		req.setPostCodeStart(44600);
-		req.setPostCodeEnd(44700);
 		ObjectMapper mapper = new ObjectMapper();
-		String requestJson = objtoJson(req);
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.get("/get-batteries")
-						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
+		Integer postCodeStart = 44600;
+		Integer posCodeEnd = 44700;
+		String requestUri = String.format("/get-batteries?postCodeStart=%d&postCodeEnd=%d", postCodeStart, posCodeEnd);
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(requestUri))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
 				GetBatteryListResponse.class);
-		assertEquals(200,resp.getRespCode().intValue());
-		assertEquals(2,resp.getBatteryNames().size());
-		assertEquals(500,resp.getTotalBatteryCapacity().intValue());
+		assertEquals(200, resp.getRespCode().intValue());
+		assertEquals(2, resp.getBatteryNames().size());
+		assertEquals(500, resp.getTotalBatteryCapacity().intValue());
 	}
 
 	@Test
 	void testGetBatteryListWhenNoRecord() throws Exception {
-		GetBatteryListRequest req = new GetBatteryListRequest();
-		req.setPostCodeStart(44600);
-		req.setPostCodeEnd(44700);
-		String requestJson = objtoJson(req);
 		ObjectMapper mapper = new ObjectMapper();
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.get("/get-batteries")
-						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
+		Integer postCodeStart = 44600;
+		Integer posCodeEnd = 44700;
+		String requestUri = String.format("/get-batteries?postCodeStart=%d&postCodeEnd=%d", postCodeStart, posCodeEnd);
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(requestUri))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
 				GetBatteryListResponse.class);
-		assertEquals(404,resp.getRespCode().intValue());
-		assertEquals(null,resp.getBatteryNames());
+		assertEquals(404, resp.getRespCode().intValue());
+		assertEquals(null, resp.getBatteryNames());
 	}
 
 	static String objtoJson(Object obj) throws JsonProcessingException {

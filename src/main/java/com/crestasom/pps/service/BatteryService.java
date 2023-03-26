@@ -11,7 +11,7 @@ public interface BatteryService {
 
 	AddBatteryResponse storeBatteryInfo(List<BatteryDTO> batteryList);
 
-	GetBatteryListResponse getBatteryList(GetBatteryListRequest request);
+	GetBatteryListResponse getBatteryList(Integer postCodeStart,Integer postCodeEnd);
 	
 	void removeAllBatteries();
 
