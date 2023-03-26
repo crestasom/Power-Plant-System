@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.crestasom.pps.dto.BatteryDTO;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.Battery;
-import com.crestasom.pps.model.GetBatteryListRequest;
 import com.crestasom.pps.model.GetBatteryListResponse;
 import com.crestasom.pps.repo.BatteryRepo;
 import com.crestasom.pps.service.impl.BatteryServiceImpl;
