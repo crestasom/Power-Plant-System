@@ -27,17 +27,17 @@ import com.crestasom.pps.util.ConfigUtility;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class BatteryServiceTest {
+class BatteryServiceUnitTest {
 	@Mock
 	BatteryRepo repo;
 	@Mock
 	ConfigUtility util;
 	@InjectMocks
 	BatteryServiceImpl service;
-	private static Logger logger = LoggerFactory.getLogger(BatteryServiceTest.class);
+	private static Logger logger = LoggerFactory.getLogger(BatteryServiceUnitTest.class);
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		logger.debug("starting setup");
 		Mockito.when(repo.save(any())).thenReturn(null);
 		List<Battery> bList = new ArrayList<>();
@@ -52,11 +52,12 @@ public class BatteryServiceTest {
 		Mockito.when(repo.findByPostcodeBetween(446800, 44900)).thenReturn(null);
 		Mockito.when(util.getPropertyAsInt("server.success.resp.code")).thenReturn(200);
 		Mockito.when(util.getPropertyAsInt("server.not.found.resp.code")).thenReturn(404);
+		Mockito.doNothing().when(repo).deleteAll();
 
 	}
 
 	@Test
-	public void testInsertBatteries() {
+	void testInsertBatteries() {
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
 		bList.add(new BatteryDTO("battery2", 44700, 280));
@@ -68,7 +69,7 @@ public class BatteryServiceTest {
 	}
 
 	@Test
-	public void testGetBatteries() {
+	void testGetBatteries() {
 		GetBatteryListRequest req = new GetBatteryListRequest();
 		req.setPostCodeStart(44600);
 		req.setPostCodeEnd(44700);
@@ -80,8 +81,9 @@ public class BatteryServiceTest {
 
 	}
 
+
 	@Test
-	public void testGetBatteriesNoResult() {
+	void testGetBatteriesNoResult() {
 		GetBatteryListRequest req = new GetBatteryListRequest();
 		req.setPostCodeStart(446800);
 		req.setPostCodeEnd(44900);

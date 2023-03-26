@@ -21,7 +21,6 @@ import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.GetBatteryListRequest;
 import com.crestasom.pps.model.GetBatteryListResponse;
 import com.crestasom.pps.service.BatteryService;
-import com.crestasom.pps.util.PPSUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -31,7 +30,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = PpsApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class BatteryControllerIT {
+class BatteryControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -39,7 +38,7 @@ public class BatteryControllerIT {
 	@Autowired
 	private BatteryService service;
 
-	public void insertMockRecord() {
+	void insertMockRecord() {
 		service.removeAllBatteries();
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
@@ -49,7 +48,7 @@ public class BatteryControllerIT {
 	}
 
 	@Test
-	public void testInsertMockRecord() throws Exception {
+	void testInsertMockRecord() throws Exception {
 		List<BatteryDTO> bList = new ArrayList<>();
 		bList.add(new BatteryDTO("battery1", 44600, 220));
 		bList.add(new BatteryDTO("battery2", 44700, 280));
@@ -57,7 +56,7 @@ public class BatteryControllerIT {
 		ObjectMapper mapper = new ObjectMapper();
 		String requestJson = objtoJson(bList);
 		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/add-batteries?reqId=" + PPSUtils.getUUID())
+				.perform(MockMvcRequestBuilders.post("/add-batteries")
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
@@ -65,7 +64,7 @@ public class BatteryControllerIT {
 	}
 
 	@Test
-	public void testInsertMockRecordNameValidationFailed() throws Exception {
+	void testInsertMockRecordNameValidationFailed() throws Exception {
 		List<BatteryDTO> bList = new ArrayList<>();
 		BatteryDTO dto = new BatteryDTO();
 		dto.setCapacity(200);
@@ -74,7 +73,7 @@ public class BatteryControllerIT {
 		ObjectMapper mapper = new ObjectMapper();
 		String requestJson = objtoJson(bList);
 		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/add-batteries?reqId=" + PPSUtils.getUUID())
+				.perform(MockMvcRequestBuilders.post("/add-batteries")
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().is4xxClientError()).andReturn();
 		AddBatteryResponse resp = mapper.readValue(result.getResponse().getContentAsString(), AddBatteryResponse.class);
@@ -83,7 +82,7 @@ public class BatteryControllerIT {
 	}
 
 	@Test
-	public void testGetBatteryList() throws Exception {
+	void testGetBatteryList() throws Exception {
 		insertMockRecord();
 		GetBatteryListRequest req = new GetBatteryListRequest();
 		req.setPostCodeStart(44600);
@@ -91,7 +90,7 @@ public class BatteryControllerIT {
 		ObjectMapper mapper = new ObjectMapper();
 		String requestJson = objtoJson(req);
 		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.get("/get-batteries?reqId=" + PPSUtils.getUUID())
+				.perform(MockMvcRequestBuilders.get("/get-batteries")
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
@@ -102,14 +101,14 @@ public class BatteryControllerIT {
 	}
 
 	@Test
-	public void testGetBatteryListWhenNoRecord() throws Exception {
+	void testGetBatteryListWhenNoRecord() throws Exception {
 		GetBatteryListRequest req = new GetBatteryListRequest();
 		req.setPostCodeStart(44600);
 		req.setPostCodeEnd(44700);
 		String requestJson = objtoJson(req);
 		ObjectMapper mapper = new ObjectMapper();
 		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.get("/get-batteries?reqId=" + PPSUtils.getUUID())
+				.perform(MockMvcRequestBuilders.get("/get-batteries")
 						.contentType(MediaType.APPLICATION_JSON).content(requestJson))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		GetBatteryListResponse resp = mapper.readValue(result.getResponse().getContentAsString(),
@@ -118,7 +117,7 @@ public class BatteryControllerIT {
 		assertEquals(null,resp.getBatteryNames());
 	}
 
-	public static String objtoJson(Object obj) throws JsonProcessingException {
+	static String objtoJson(Object obj) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
