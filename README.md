@@ -9,7 +9,9 @@
 <li> Project was written,compiled ,build and ran using Eclipse IDE.</li>
 <li>Junit with Mocito was used to write the Unit Test Cases.</li>
 <li>Mock MVC from Spring Test Framework was used to perform Integration Testing. </li>
-<li>Sonar Qube was used for code analysis and code coverage.</li>
+<li>Sonar Qube with Jacoco was used for code analysis and code coverage.</li>
+<li>Dev Tools from Spring boot was used for hot reloading code.</li>
+<li>Rest docs from Spring was used to generate sample request/response.</li>
 </ul>
 <b> Setting Up project.</b>
 <ul>
