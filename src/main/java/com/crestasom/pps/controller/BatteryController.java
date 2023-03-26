@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crestasom.pps.model.AddBatteryResponse;
-import com.crestasom.pps.model.GetBatteryListRequest;
 import com.crestasom.pps.dto.BatteryDTO;
 import com.crestasom.pps.model.GetBatteryListResponse;
 import com.crestasom.pps.service.BatteryService;

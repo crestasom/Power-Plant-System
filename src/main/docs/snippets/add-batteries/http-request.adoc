@@ -1,0 +1,21 @@
+[source,http,options="nowrap"]
+----
+POST /add-batteries HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 221
+Host: localhost:8080
+
+[ {
+  "name" : "battery1",
+  "postcode" : 44600,
+  "capacity" : 220
+}, {
+  "name" : "battery2",
+  "postcode" : 44700,
+  "capacity" : 280
+}, {
+  "name" : "battery3",
+  "postcode" : 44800,
+  "capacity" : 190
+} ]
+----

@@ -1,0 +1,4 @@
+[source,json,options="nowrap"]
+----
+{"respCode":200,"respDesc":"All battery Stored Successfully"}
+----

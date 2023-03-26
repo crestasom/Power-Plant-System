@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.crestasom.pps.dto.BatteryDTO;
 import com.crestasom.pps.model.AddBatteryResponse;
 import com.crestasom.pps.model.Battery;
-import com.crestasom.pps.model.GetBatteryListRequest;
 import com.crestasom.pps.model.GetBatteryListResponse;
 import com.crestasom.pps.repo.BatteryRepo;
 import com.crestasom.pps.service.BatteryService;
@@ -39,12 +38,6 @@ public class BatteryServiceImpl implements BatteryService {
 		return resp;
 	}
 
-	public static void main(String[] args) {
-		Integer postCodeStart = 44600;
-		Integer posCodeEnd = 44700;
-		String requestUri = String.format("/get-batteries?postCodeStart=%d&posCodeEnd=%d", postCodeStart, posCodeEnd);
-		System.out.println(requestUri);
-	}
 	@Override
 	public GetBatteryListResponse getBatteryList(Integer postCodeStart,Integer postCodeEnd) {
 		logger.info("Get battery list for post code range [{}] - [{}]", postCodeStart, postCodeEnd);

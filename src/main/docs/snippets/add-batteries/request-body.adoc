@@ -1,0 +1,16 @@
+[source,json,options="nowrap"]
+----
+[ {
+  "name" : "battery1",
+  "postcode" : 44600,
+  "capacity" : 220
+}, {
+  "name" : "battery2",
+  "postcode" : 44700,
+  "capacity" : 280
+}, {
+  "name" : "battery3",
+  "postcode" : 44800,
+  "capacity" : 190
+} ]
+----
