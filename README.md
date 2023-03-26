@@ -18,4 +18,5 @@
 <li>Run maven build(mvn clean install)</li>
 <li>Run jar file under target folder (java -jar pps-0.0.1-SNAPSHOT.jar) </li>
 </ul>
+<b> Sample Request and Response can be found under src/docs folder after building project</b>
 
