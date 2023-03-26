@@ -7,4 +7,10 @@
 <li>Junit with Mocito was used to write the Unit Test Cases.</li>
 <li>Mock MVC from Spring Test Framework was used to perform Integration Testing. </li>
 <li>Sonar Qube was used for code analysis and code coverage.</li>
+<b> Setting Up project.</b>
+<li>Clone the project in your local</li>
+<li>Open folder containing project in terminal</li>
+<li>Run maven build(mvn clean install)</li>
+<li>Run jar file under target folder (java -jar pps-0.0.1-SNAPSHOT.jar) </li>
+
 
